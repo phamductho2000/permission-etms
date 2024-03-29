@@ -27,7 +27,7 @@ export default {
         '/api/': {
             target: 'http://10.64.149.157:8081',
             changeOrigin: true,
-            pathRewrite: {'^': ''},
+            // pathRewrite: {'^': ''},
         },
     },
 };
