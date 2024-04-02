@@ -3,6 +3,7 @@ import type {RequestConfig} from '@umijs/max';
 import {message, notification} from 'antd';
 import {createIntl, createIntlCache} from "@@/plugin-locale/localeExports";
 import messages from '@/locales/vi-VN';
+import proxy from "../config/proxy";
 
 const cache = createIntlCache()
 
@@ -94,6 +95,21 @@ export const errorConfig: RequestConfig = {
             return {...config, url};
         },
     ],
+
+    // requestInterceptors: [
+    //     (config: RequestOptions) => {
+    //         let url = config?.url;
+    //         const currentProxy: any = proxy[REACT_APP_ENV as keyof typeof proxy];
+    //         const domain = currentProxy?.['/api/']?.target;
+    //         // if (url?.indexOf('/api') !== 0) {
+    //         //     url = `/api${url}`;
+    //         // }
+    //         if (url?.indexOf('/api') === 0) {
+    //             url = `${domain}${url}`;
+    //         }
+    //         return {...config, url};
+    //     },
+    // ],
 
     responseInterceptors: [
         (response: any) => {

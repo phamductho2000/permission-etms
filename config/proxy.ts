@@ -13,7 +13,7 @@ export default {
         '/api/': {
             target: '',
             changeOrigin: true,
-            pathRewrite: {'^': ''},
+            // pathRewrite: {'^': ''},
         },
     },
     uat: {
