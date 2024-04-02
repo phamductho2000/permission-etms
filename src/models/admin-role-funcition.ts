@@ -1,5 +1,4 @@
 import {useCallback, useState} from "react";
-import {getAllAdminRole, updateAdminRole} from "@/services/apis/adminRoleController";
 import {getAllAdminRoleFunction, updateRoleAdminFuncDto} from "@/services/apis/adminRoleFunctionController";
 import {addOrUpdateToDataSource} from "@/utils/dataUtil";
 
