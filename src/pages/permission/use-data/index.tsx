@@ -36,9 +36,9 @@ export default function ManageUseData() {
             render: (text: string, row: API.TblUsersDTO, index: number) => index + 1,
         },
         {
-            title: "ID",
-            dataIndex: 'userId',
-            key: 'userId',
+            title: "Cán bộ thuế",
+            dataIndex: 'descr',
+            key: 'descr',
         },
         {
             title: "Tài khoản",
@@ -46,9 +46,14 @@ export default function ManageUseData() {
             key: 'username',
         },
         {
-            title: "Họ Và Tên",
-            dataIndex: 'createdBy',
-            key: 'createdBy',
+            title: "Tên miền",
+            dataIndex: 'domain',
+            key: 'domain',
+        },
+        {
+            title: "Cơ quan thuế",
+            dataIndex: 'taxo',
+            key: 'taxo',
         },
         // {
         //     title: "Tên CQT",
