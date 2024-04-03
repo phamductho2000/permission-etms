@@ -1,16 +1,15 @@
 import React, {useImperativeHandle, useState} from "react";
-import {Button, Drawer, Flex, Form, notification, Row, Table, Tabs, TabsProps} from "antd";
-import Search from "antd/es/input/Search";
+import {Drawer, Form, notification, Tabs, TabsProps} from "antd";
 import TabChucNangChoNhomPhanQuyen from "@/pages/permission/group/tab-chuc-nang-cho-nhom-phan-quyen";
 import TabQuyenNguoiDung from "@/pages/permission/group/tab-quyen-nguoi-dung";
 
 export type RefType = {
-    create: () => void,
-    // update: (pRecord: API.QthtNhomDTO, isView: boolean) => void
+    create: (pRecord: API.AdminRoleDTO) => void,
+    update: (pRecord: API.AUserPayLoad, isView: boolean) => void
 }
 const SidebarPhanQuyenGroup = React.forwardRef<RefType, any>((props, ref) => {
     const [open, setOpen] = useState(false);
-    const [record, setRecord] = useState<API.QthtTaikhoanDTO>();
+    const [record, setRecord] = useState<API.AUserPayLoad>();
     const [form] = Form.useForm();
     const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
     const [api, contextHolder] = notification.useNotification();
@@ -25,14 +24,14 @@ const SidebarPhanQuyenGroup = React.forwardRef<RefType, any>((props, ref) => {
 
     useImperativeHandle(ref, () => {
         return {
-            create() {
+            create(pRecord: API.AUserPayLoad) {
                 showDrawer();
-                // setRecord(pRecord);
+                setRecord(pRecord);
             },
-            update(pRecord: API.QthtNhomDTO, isView: boolean) {
-                // setRecord(pRecord);
-                // form.setFieldsValue(pRecord);
-                // setOpen(true);
+            update(pRecord: API.AUserPayLoad, isView: boolean) {
+                setRecord(pRecord);
+                form.setFieldsValue(pRecord);
+                setOpen(true);
                 // setIsView(isView);
             },
         };
@@ -49,12 +48,12 @@ const SidebarPhanQuyenGroup = React.forwardRef<RefType, any>((props, ref) => {
     const items: TabsProps['items'] = [
         {
             key: 'users',
-            label: 'Gán chức năng cho nhóm phân quyền',
+            label: 'Gán nhóm quyền cho người dùng',
             children: <TabChucNangChoNhomPhanQuyen open={open} record={record}/>,
         },
         {
             key: 'permissions',
-            label: 'Gán quyền cho người dùng',
+            label: 'Gán người dùng cho quyền',
             children: <TabQuyenNguoiDung open={open} record={record}/>,
         },
     ];
@@ -62,25 +61,6 @@ const SidebarPhanQuyenGroup = React.forwardRef<RefType, any>((props, ref) => {
         console.log(key);
     };
 
-
-    const columns = [
-        // {
-        //     title: intl.formatMessage({id: 'pages.category.group.table.orderNo', defaultMessage: 'STT'}),
-        //     dataIndex: 'orderNo',
-        //     key: 'orderNo',
-        //     render: (text: string, row: API.QthtTaikhoanDTO, index: number) => index + 1,
-        // },
-        {
-            title: "ID",
-            dataIndex: 'id',
-            key: 'id',
-        },
-        {
-            title: "Quyền",
-            dataIndex: 'quyen',
-            key: 'quyen',
-        },
-    ]
 
     return (
         <>

@@ -16,7 +16,7 @@ const Settings: ProLayoutProps & {
   colorWeak: false,
   title: 'Hệ thống Kho cơ sở dữ liệu',
   pwa: true,
-  logo: '/dmdc/images/logo.jpeg',
+  logo: '/images/logo.jpeg',
   iconfontUrl: '',
   splitMenus: true,
   token: {

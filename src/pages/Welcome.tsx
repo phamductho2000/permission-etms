@@ -32,7 +32,7 @@ const Welcome: React.FC = () => {
               color: token.colorTextHeading,
             }}
           >
-            HỌC VIỆN CHÍNH TRỊ QUỐC GIA HỒ CHÍ MINH
+            Hệ Thống Kho Cơ Sở Dữ Liệu
           </div>
           <p
             style={{

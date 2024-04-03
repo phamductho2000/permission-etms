@@ -67,7 +67,7 @@ svg {
     left: 50%;
     top: 50%;
     transform: translateX(-50%) translateY(-50%);
-    /*width: 400px !important;*/
+    width: 400px !important;
     background: white;
     width: fit-content;
     height: fit-content;
@@ -80,5 +80,6 @@ svg {
 }
 
 body {
-
+    /*background-image: url("https://vinabookkeeping.com/wp-content/uploads/2021/12/1-1.jpg") !important;*/
+    background: linear-gradient(rgb(14 0 0 / 50%), rgb(27 25 25 / 50%)), url("https://vinabookkeeping.com/wp-content/uploads/2021/12/1-1.jpg") !important;
 }

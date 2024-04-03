@@ -3,6 +3,8 @@ import type {RequestConfig} from '@umijs/max';
 import {message, notification} from 'antd';
 import {createIntl, createIntlCache} from "@@/plugin-locale/localeExports";
 import messages from '@/locales/vi-VN';
+import proxy from "../config/proxy";
+import {history} from "@/.umi-production/exports";
 
 const cache = createIntlCache()
 
@@ -63,10 +65,7 @@ export const errorConfig: RequestConfig = {
                         message.error(messageTxt);
                         break;
                     case 401:
-                        redirectToLoginKeycloak({
-                            redirectUri: error.response.headers.location,
-                            redirectToCurrentPage: false
-                        });
+                        window.location = "/authenticate/login?redirect=%2Fwelcome"
                         break;
                     case 500:
                         message.error(intl.formatMessage({id: `message.http.500`}));
@@ -86,23 +85,36 @@ export const errorConfig: RequestConfig = {
     },
 
     requestInterceptors: [
-        (config: RequestOptions) => {
-            let url = config?.url;
-            if (url?.indexOf('/api') !== 0) {
-                url = `/api${url}`;
-            }
-            return {...config, url};
+        (url, options) =>
+        {
+            console.log('options', options)
+            // do something
+            options.headers = {...options.headers, Authorization: 'Bearer ' + localStorage.getItem("Authorization")}
+            return { url, options }
         },
+        // a tuple, the first element is the request interceptor, the second is the error handler
+        [(url, options) => {return { url, options }}, (error) => {return Promise.reject(error)}],
+        // array, omitting error handler
+        [(url, options) => {return { url, options }}]
     ],
+
+    // requestInterceptors: [
+    //     (config: RequestOptions) => {
+    //         let url = config?.url;
+    //         const currentProxy: any = proxy[REACT_APP_ENV as keyof typeof proxy];
+    //         const domain = currentProxy?.['/api/']?.target;
+    //         // if (url?.indexOf('/api') !== 0) {
+    //         //     url = `/api${url}`;
+    //         // }
+    //         if (url?.indexOf('/api') === 0) {
+    //             url = `${domain}${url}`;
+    //         }
+    //         return {...config, url};
+    //     },
+    // ],
 
     responseInterceptors: [
         (response: any) => {
-            const redirected = redirectToLoginKeycloak({
-                redirectUri: response.request.responseURL,
-                redirectToCurrentPage: true
-            });
-            if (redirected) return;
-
             const {data} = response;
 
             if (data?.success === false) {
