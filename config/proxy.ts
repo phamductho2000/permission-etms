@@ -7,13 +7,14 @@ export default {
         '/api/': {
             target: 'http://localhost:8082/',
             changeOrigin: true,
+            pathRewrite: {'^': ''},
         },
     },
     test: {
         '/api/': {
             target: '',
             changeOrigin: true,
-            // pathRewrite: {'^': ''},
+            pathRewrite: {'^': ''},
         },
     },
     uat: {
