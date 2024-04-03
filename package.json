@@ -2,7 +2,7 @@
     "name": "hcma-frontend",
     "version": "6.0.0",
     "private": true,
-    "description": "HCMA Frontend",
+    "description": "KTB Frontend",
     "scripts": {
         "analyze": "cross-env ANALYZE=1 max build",
         "build": "max build",

@@ -3,13 +3,13 @@ import Search from "antd/es/input/Search";
 import {useEffect, useState} from "react";
 import {useModel} from "@@/exports";
 import {usePagination} from "ahooks";
-import {findAllUserByGroupId, getAllAdminRoleFunction} from "@/services/apis/adminRoleFunctionController";
+import {getAllGroups} from "@/services/apis/aGroupsController";
+// import {findAllUserBygroupId, getAllAdminRoleFunction} from "@/services/apis/adminRoleFunctionController";
 
 export default function TabChucNangChoNhomPhanQuyen({open, record}: any) {
     const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
-    const {listAdminFunc, loadData, getAllBySearch} = useModel('admin-funciton');
-    const {updateadRoleAdminFuncDto} = useModel('admin-role-funcition');
-    const [listUser, setListUser] = useState<API.AdminRoleFunctionDTO[]>();
+    const {listgroup, total1, loadData1, updateGrantByUser} = useModel('group');
+    const [listUser, setListUser] = useState<API.AUserPayLoad[]>();
     const [applicationList, setApplicationList] = useState<API.AdminRoleFunctionDTO[]>([]);
     const [listAdminRoleFunction, setAdminRoleFunction] = useState<API.AdminRoleFunctionDTO[]>();
     const [total, setTotal] = useState<any>();
@@ -24,40 +24,40 @@ export default function TabChucNangChoNhomPhanQuyen({open, record}: any) {
         console.log('selectedRowKeys changed: ', newSelectedRowKeys);
         setSelectedRowKeys(newSelectedRowKeys);
     };
-    console.log('listAdminFunc', listAdminFunc);
-    useEffect(() => {
-        loadData(applicationList)
-    }, [open])
+    // console.log('listgroup', listgroup);
+    // useEffect(() => {
+    //     loadData1(applicationList)
+    // }, [open])
+    //
+    // const handleLoadData = (formValue?: API.AdminFuncDTO|null) => {
+    //     if (formValue) {
+    //         getAllBySearch(paginationQuery, formValue);
+    //     } else {
+    //         form.validateFields().then((formValue: API.AdminFuncDTO) => {
+    //             getAllBySearch(paginationQuery, formValue);
+    //             console.log('formvalue', formValue)
+    //         })
+    //     }
+    // };
 
-    const handleLoadData = (formValue?: API.AdminFuncDTO|null) => {
-        if (formValue) {
-            getAllBySearch(paginationQuery, formValue);
-        } else {
-            form.validateFields().then((formValue: API.AdminFuncDTO) => {
-                getAllBySearch(paginationQuery, formValue);
-                console.log('formvalue', formValue)
-            })
-        }
-    };
-
-    const handleFindAllUserByGroupId = (body: API.AdminRoleDTO) => {
+    const handleFindAllUserBygroupId = (body: API.AUserPayLoad) => {
         // lấy ra findbyid của userrole
-        findAllUserByGroupId(body).then((resp: any) => {
+        getAllGroups(body).then((resp: any) => {
             setListUser(resp);
         })
     }
 
     useEffect(() => {
         if (open) {
-            handleFindAllUser({});
-            handleFindAllUserByGroupId(record as API.AdminRoleDTO);
+            // handleFindAllUser({});
+            handleFindAllUserBygroupId(record as API.AUserPayLoad);
         }
     }, [open, record])
 
     useEffect(() => {
         // set lại nút checkbox theo funcID
         if (listUser) {
-            const keys = listUser.map(item => item?.funcId);
+            const keys = listUser.map(item => item?.gname);
             setSelectedRowKeys(keys as React.Key[]);
             console.log('ListUser', listUser);
         }
@@ -77,32 +77,27 @@ export default function TabChucNangChoNhomPhanQuyen({open, record}: any) {
         window.close();
     }
 
-    const handleFindAllUser = (body?: any) => {
-        // loadDataUser({...paginationQuery, page: 0}, {});
-        getAllAdminRoleFunction(paginationQuery, body).then(resp => {
-            setAdminRoleFunction(resp as API.AdminRoleFunctionDTO[]);
-            setTotal(resp?.total);
-        })
-    }
+    // const handleFindAllUser = (body?: any) => {
+    //     // loadDataUser({...paginationQuery, page: 0}, {});
+    //     getAllAdminRoleFunction(paginationQuery, body).then(resp => {
+    //         setAdminRoleFunction(resp as API.AdminRoleFunctionDTO[]);
+    //         setTotal(resp?.total);
+    //     })
+    // }
     const onSave = () => {
         console.log('listSelected', selectedRowKeys);
         if (selectedRowKeys.length > 0) {
-            const newdata =[]
-            selectedRowKeys.forEach(e => {
-                const data = {funcId: e}
-                console.log('e', data);
-                newdata.push(data)
-
-                console.log('newdata', newdata);
-            })
-            const body: API.AdminRoleFunctionDTO = {
-                roleId: record?.roleId,
-                adminFuncDTOList: newdata
+            const body: API.AUserPayLoad = {
+                usr: record?.gmember,
+                list: selectedRowKeys,
+                taxo: record?.taxo,
+                domain: record?.domain,
+                name: record?.name,
+                descr: record?.descr
             }
             console.log('record', record);
-            updateadRoleAdminFuncDto(body, (success: boolean) => {
+            updateGrantByUser(body, (success: boolean) => {
                 if (success) {
-                    handleFindAllUser({});
                     api['success']({message: 'Cập nhật thành công'});
                     closeTab();
 
@@ -121,17 +116,17 @@ export default function TabChucNangChoNhomPhanQuyen({open, record}: any) {
             title: "STT",
             dataIndex: 'stt',
             key: 'stt',
-            render: (text: string, row: API.AdminFuncDTO, index: number) => index + 1,
+            render: (text: string, row: API.AUserPayLoad, index: number) => index + 1,
         },
         {
-            title: "ID",
-            dataIndex: 'funcId',
-            key: 'funcId',
+            title: "Tên nhóm",
+            dataIndex: 'gname',
+            key: 'gname',
         },
         {
-            title: "Chức năng",
-            dataIndex: 'funcName',
-            key: 'funcName',
+            title: "Mô tả",
+            dataIndex: 'descr',
+            key: 'descr',
         },
     ]
 
@@ -150,11 +145,11 @@ export default function TabChucNangChoNhomPhanQuyen({open, record}: any) {
 
             <Table
                 rowSelection={rowSelection}
-                dataSource={listAdminFunc}
+                dataSource={listgroup}
                 columns={columns}
                 style={{marginTop: 14}}
                 pagination={pagination}
-                rowKey="funcId"
+                rowKey="gname"
             />
         </>
     )
