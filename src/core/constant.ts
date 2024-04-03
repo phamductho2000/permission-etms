@@ -1,7 +1,7 @@
 export const APPLICATION_CONTEXT = "/dmdc";
 
 export const PUBLIC_PATH = `/authenticate`;
-export const LOGIN_PATH = `/authenticate/login`;
+export const LOGIN_PATH = `/authenticate`;
 export const CHOOSE_ORG_PATH = `/authenticate/choose-org`;
 export let intl: any = undefined;
 export const setIntl = (intlP: any) => {

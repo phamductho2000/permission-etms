@@ -7,6 +7,7 @@ import CreatFromGroup, {RefTypeAdminRole} from "@/pages/permission/group/creat-f
 import {useModel} from "@umijs/max";
 import {usePagination} from "ahooks";
 import dayjs from "dayjs";
+import {authenticate} from "@/services/apis/jwtApi";
 
 export default function ManageGroup() {
     const createSideBarRef = useRef<RefType>();

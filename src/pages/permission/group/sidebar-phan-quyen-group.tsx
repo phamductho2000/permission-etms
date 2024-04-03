@@ -46,11 +46,11 @@ const SidebarPhanQuyenGroup = React.forwardRef<RefType, any>((props, ref) => {
         onChange: onSelectChange,
     };
     const items: TabsProps['items'] = [
-        // {
-        //     key: 'users',
-        //     label: 'Gán chức năng cho nhóm phân quyền',
-        //     children: <TabChucNangChoNhomPhanQuyen open={open} record={record}/>,
-        // },
+        {
+            key: 'users',
+            label: 'Gán chức năng cho nhóm phân quyền',
+            children: <TabChucNangChoNhomPhanQuyen open={open} record={record}/>,
+        },
         {
             key: 'permissions',
             label: 'Gán quyền cho người dùng',

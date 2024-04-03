@@ -7,6 +7,7 @@ import {history} from '@@/exports';
 import {Button, Card, Col, Form, Input, Row, Select} from "antd";
 import LogoLogin from "public/images/logo-login.jpg"
 import HcmaSelect from "@/components/HcmaSelect";
+import {authenticate} from "@/services/apis/jwtApi";
 
 const options = [{
     value: 'vp.tct.vn',
@@ -82,8 +83,15 @@ const Login: React.FC = () => {
     const onLogin = () => {
         form.validateFields().then((formValue: API.Login) => {
             const body = {...formValue}
-            loginAuthenticate(body)
-            // redirectUrl();
+            authenticate(body).then(res => {
+                // @ts-ignore
+                localStorage.setItem("Authorization", res?.token);
+                // lưu tài khoải đăng nhập vào localStorage
+                localStorage.setItem("Username", formValue?.username);
+                setInitialState(body);
+                redirectUrl();
+            })
+
         })
     }
 

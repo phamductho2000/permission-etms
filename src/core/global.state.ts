@@ -2,13 +2,18 @@
 // import {getAllDmHeThong} from "@/services/apis/dmHeThongController";
 // import {getFunctionIdUngDung} from "@/services/apis/qthtChucnangController";
 import {UNPAGED} from "@/core/constant";
+import {useModel} from "@@/exports";
+import {lowerFirst} from "lodash-es";
+// const {initialState, setInitialState} = useModel('@@initialState');
 
 export type GlobalStateType = {
     roleAccess: string[],
     // dmHeThong: API.DmHeThongDTO[]
 }
 // export let currentUser: API.CurrentUser | undefined = undefined;
-export const getGlobalState = async () => {
+export const getGlobalState = () => {
+    const {initialState, setInitialState} = useModel('@@initialState');
+    console.log('initialState', initialState)
     // // step 1: Load user info
     // const loadCurrentUserResponse = await me();
     // const currUser = loadCurrentUserResponse.data;
@@ -26,5 +31,5 @@ export const getGlobalState = async () => {
     //     dmHeThong: response[1].data
     // };
     // return {currentUser: currUser, globalState};
-    return {currentUser: null};
+    return initialState;
 }

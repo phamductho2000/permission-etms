@@ -7,6 +7,7 @@ export default {
         '/api/': {
             target: 'http://localhost:8082',
             changeOrigin: true,
+            pathRewrite: {'^': ''},
         },
     },
     // test: {
@@ -27,7 +28,7 @@ export default {
         '/api/': {
             target: 'http://10.64.149.157:8081',
             changeOrigin: true,
-            // pathRewrite: {'^': ''},
+            pathRewrite: {'^': ''},
         },
     },
 };
