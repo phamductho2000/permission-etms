@@ -2,8 +2,8 @@ import React, {useEffect, useImperativeHandle, useState} from "react";
 import {Button, Drawer, Flex, Form, notification, Row, Table} from "antd";
 import Search from "antd/es/input/Search";
 import {useModel} from "@@/exports";
-import {findAllUserByGroupId, getAllAdminRoleFunction} from "@/services/apis/adminRoleFunctionController";
-import {findAllTblUserGroupId, getAllTblUsers} from "@/services/apis/tblUsersController";
+import {findAllUserBygroupId, getAllAdminRoleFunction} from "@/services/apis/adminRoleFunctionController";
+import {findAllTblUsergroupId, getAllTblUsers} from "@/services/apis/tblUsersController";
 import {usePagination} from "ahooks";
 
 export type RefType = {
@@ -38,9 +38,9 @@ const SidebarPhanQuyenUser = React.forwardRef<RefType, any>((props, ref) => {
             setTotal(resp?.total);
         })
     }
-    const handleFindAllUserByGroupId = (body: API.TblUsersDTO) => {
+    const handleFindAllUserBygroupId = (body: API.TblUsersDTO) => {
         // lấy ra findbyid của userrole
-        findAllTblUserGroupId(body).then((resp: any) => {
+        findAllTblUsergroupId(body).then((resp: any) => {
             setListUser(resp);
         })
     }
@@ -48,7 +48,7 @@ const SidebarPhanQuyenUser = React.forwardRef<RefType, any>((props, ref) => {
     useEffect(() => {
         if (open) {
             handleFindAllUser({});
-            handleFindAllUserByGroupId(record as API.TblUsersDTO);
+            handleFindAllUserBygroupId(record as API.TblUsersDTO);
         }
     }, [open, record])
 

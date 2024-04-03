@@ -11,7 +11,7 @@ export type RefTypeAdminRole = {
     update: (pRecord: API.AdminRoleDTO, isView: boolean) => void,
 }
 
-const CreatFromGroup = React.forwardRef<RefTypeAdminRole, any>((props, ref) => {
+const CreatFromgroup = React.forwardRef<RefTypeAdminRole, any>((props, ref) => {
     const [record, setRecord] = useState<[]>();
     const [form] = Form.useForm();
     const [isview, setisview] = useState<boolean>(false);
@@ -207,4 +207,4 @@ const CreatFromGroup = React.forwardRef<RefTypeAdminRole, any>((props, ref) => {
     </>);
 });
 
-export default CreatFromGroup;
+export default CreatFromgroup;

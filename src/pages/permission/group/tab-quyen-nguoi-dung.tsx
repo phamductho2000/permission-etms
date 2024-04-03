@@ -3,13 +3,13 @@ import {Button, Flex, Form, notification, Table} from "antd";
 import Search from "antd/es/input/Search";
 import {useModel} from "@@/exports";
 import {getAllAdminRoleFunction} from "@/services/apis/adminRoleFunctionController";
-import {findAllUserAdminByGroupId, getAllAdminRoleUser} from "@/services/apis/adminRoleUserController";
+import {getAllAdminRoleUser} from "@/services/apis/adminRoleUserController";
 import {usePagination} from "ahooks";
 
 export default function TabQuyenNguoiDung ({open, record}: any) {
     const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
     const [applicationList, setApplicationList] = useState<API.TblUsersDTO[]>([]);
-    const {listTblUsers, loadData,  getAll} = useModel('tbl-user');
+    const {listgroupMember, loadData,} = useModel('group-member');
     const {updateadRoleAdmiUserDto} = useModel('admin-role-user');
     const [listUser, setListUser] = useState<API.AdminRoleUserDTO[]>();
     const [api, contextHolder] = notification.useNotification();
@@ -37,23 +37,23 @@ export default function TabQuyenNguoiDung ({open, record}: any) {
     };
 
 
-    useEffect(() => {
-        getAll(applicationList)
-    }, [open])
+    // useEffect(() => {
+    //     getAll(applicationList)
+    // }, [open])
 
-    const handleFindAllUserByGroupId = (body: API.AdminRoleDTO) => {
-        // lấy ra findbyid của userrole
-        findAllUserAdminByGroupId(body).then((resp: any) => {
-            setListUser(resp);
-        })
-    }
+    // const handleFindAllUserBygroupId = (body: API.AdminRoleDTO) => {
+    //     // lấy ra findbyid của userrole
+    //     findAllUserAdminBygroupId(body).then((resp: any) => {
+    //         setListUser(resp);
+    //     })
+    // }
 
-    useEffect(() => {
-        if (open && record) {
-            handleFindAllUser({});
-            handleFindAllUserByGroupId(record as API.AdminRoleDTO);
-        }
-    }, [open, record])
+    // useEffect(() => {
+    //     if (open && record) {
+    //         handleFindAllUser({});
+    //         handleFindAllUserBygroupId(record as API.AdminRoleDTO);
+    //     }
+    // }, [open, record])
 
     useEffect(() => {
         // set lại nút checkbox theo funcID
@@ -82,14 +82,19 @@ export default function TabQuyenNguoiDung ({open, record}: any) {
             render: (text: string, row: API.TblUsersDTO, index: number) => index + 1,
         },
         {
-            title: "ID",
-            dataIndex: 'userId',
-            key: 'userId',
+            title: "Tài khoản",
+            dataIndex: 'gmember',
+            key: 'gmember',
         },
         {
-            title: "Chức năng",
-            dataIndex: 'username',
-            key: 'username',
+            title: "Tên miền",
+            dataIndex: 'domain',
+            key: 'domain',
+        },
+        {
+            title: "Cơ quan thuế",
+            dataIndex: 'taxo',
+            key: 'taxo',
         },
     ]
 
@@ -143,7 +148,7 @@ export default function TabQuyenNguoiDung ({open, record}: any) {
 
             <Table
                 rowSelection={rowSelection}
-                dataSource={listTblUsers}
+                dataSource={listgroupMember}
                 columns={columns}
                 style={{marginTop: 14}}
                 pagination={pagination}

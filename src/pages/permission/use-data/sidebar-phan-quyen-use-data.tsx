@@ -3,7 +3,7 @@ import {usePagination} from "ahooks";
 import {useModel} from "@umijs/max";
 import {Button, Drawer, Flex, Form, notification, Row, Table} from "antd";
 import Search from "antd/es/input/Search";
-import {findAllUserRoleGroupId, getAllUserRole} from "@/services/apis/userRoleController";
+import {getAllUserRole} from "@/services/apis/userRoleController";
 
 export type RefType = {
     create: (pRecord: API.UserRoleDTO, isView: boolean) => void,
@@ -50,9 +50,9 @@ const SidebarPhanQuyenUseData = React.forwardRef<RefType, any>((props, ref) => {
             setTotal(resp?.total);
         })
     }
-    const handleFindAllUserByGroupId = (body: API.UserRoleDTO) => {
+    const handleFindAllUserBygroupId = (body: API.UserRoleDTO) => {
         // lấy ra findbyid của userrole
-        findAllUserRoleGroupId(body).then((resp: any) => {
+        findAllUserRolegroupId(body).then((resp: any) => {
             setListUser(resp);
         })
     }
@@ -60,7 +60,7 @@ const SidebarPhanQuyenUseData = React.forwardRef<RefType, any>((props, ref) => {
     useEffect(() => {
         if (open) {
             handleFindAllUser({});
-            handleFindAllUserByGroupId(record as API.UserRoleDTO);
+            handleFindAllUserBygroupId(record as API.UserRoleDTO);
         }
     }, [open, record])
 
