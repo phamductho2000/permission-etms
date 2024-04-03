@@ -76,7 +76,7 @@ export default function ManageGroup() {
                                 icon={<EditOutlined/>}></Button>
                     </Tooltip>
                     <Tooltip placement="top" title='Phân quyền'>
-                        <Button onClick={() => createSideBarRef.current?.create(record)}
+                        <Button onClick={() => createSideBarRef.current?.create(record, "users")}
                                 icon={<UserAddOutlined/>}>
                         </Button>
                     </Tooltip>
@@ -116,7 +116,7 @@ export default function ManageGroup() {
             title: "Thao tác",
             dataIndex: 'roleId',
             key: 'roleId',
-            render: (id: string, record: API.AGroupsDTO) =>
+            render: (id: string, record: API.AUserPayLoad) =>
                 <Space>
                     <Tooltip placement="top" title='Xem'>
                         <Button onClick={() => createForm.current?.update(record, true)}
@@ -129,21 +129,10 @@ export default function ManageGroup() {
                                 icon={<EditOutlined/>}></Button>
                     </Tooltip>
                     <Tooltip placement="top" title='Phân quyền'>
-                        <Button onClick={() => createSideBarRef.current?.create(record)}
+                        <Button onClick={() => createSideBarRef.current?.create(record, "permissions")}
                                 icon={<UserAddOutlined/>}>
                         </Button>
                     </Tooltip>
-                    {/*<Popconfirm*/}
-                    {/*    placement="top"*/}
-                    {/*    title={"Xóa"}*/}
-                    {/*    description={"Bạn có chắc chắn muốn xóa bản ghi này?"}*/}
-                    {/*    okText="Đồng ý"*/}
-                    {/*    cancelText="Hủy" onConfirm={() => {*/}
-                    {/*    // deleteadminrole(id)*/}
-                    {/*}}*/}
-                    {/*>*/}
-                    {/*    <Tooltip title={"xóa bản ghi"}><Button danger icon={<DeleteOutlined/>}></Button></Tooltip>*/}
-                    {/*</Popconfirm>*/}
                 </Space>
         },
     ]
@@ -157,19 +146,12 @@ export default function ManageGroup() {
                         labelCol={{span: 4}}
                         wrapperCol={{span: 16}}
                     >
-                        {/*<Row>*/}
-                        {/*    <Form.Item label={""} style={{width: "350px"}} >*/}
-                        {/*        <Input placeholder="ID or Họ và Tên"/>*/}
-                        {/*    </Form.Item>*/}
-                        {/*    <Button type="primary" style={{marginLeft: "-80px"}} icon={<SearchOutlined />} >Tìm Kiếm</Button>*/}
-                        {/*</Row>*/}
                     </Form>
                 </div>
                 <div>
-                    <Card>
+                    <Card title={"Nhóm quyền cho người dùng"}>
                         <Space>
                             <Button type='primary' onClick={() => createForm.current?.create(false)}>Thêm mới</Button>
-                            {/*<Button icon={<ReloadOutlined/>} onClick={handleLoadData}></Button>*/}
                         </Space>
                         <div>
                             <Table
@@ -184,7 +166,7 @@ export default function ManageGroup() {
                 </div>
 
                 <div style={{marginTop: "20px"}}>
-                    <Card>
+                    <Card title={"Người dùng cho quyền"}>
                         <Space>
                         </Space>
                         <div>

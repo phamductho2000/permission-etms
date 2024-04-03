@@ -4,7 +4,7 @@ import TabChucNangChoNhomPhanQuyen from "@/pages/permission/group/tab-chuc-nang-
 import TabQuyenNguoiDung from "@/pages/permission/group/tab-quyen-nguoi-dung";
 
 export type RefType = {
-    create: (pRecord: API.AdminRoleDTO) => void,
+    create: (pRecord: API.AdminRoleDTO, type: string) => void,
     update: (pRecord: API.AUserPayLoad, isView: boolean) => void
 }
 const SidebarPhanQuyenGroup = React.forwardRef<RefType, any>((props, ref) => {
@@ -13,7 +13,9 @@ const SidebarPhanQuyenGroup = React.forwardRef<RefType, any>((props, ref) => {
     const [form] = Form.useForm();
     const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
     const [api, contextHolder] = notification.useNotification();
+    const [type , setType] = useState();
 
+    console.log('type', type)
     const showDrawer = () => {
         setOpen(true);
     };
@@ -24,18 +26,19 @@ const SidebarPhanQuyenGroup = React.forwardRef<RefType, any>((props, ref) => {
 
     useImperativeHandle(ref, () => {
         return {
-            create(pRecord: API.AUserPayLoad) {
+            create(pRecord: API.AUserPayLoad, type) {
                 showDrawer();
                 setRecord(pRecord);
+                setType(type);
             },
-            update(pRecord: API.AUserPayLoad, isView: boolean) {
+            update(pRecord: API.AUserPayLoad, isView: boolean ) {
                 setRecord(pRecord);
                 form.setFieldsValue(pRecord);
                 setOpen(true);
                 // setIsView(isView);
             },
         };
-    }, []);
+    }, [type, record]);
     const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
         console.log('selectedRowKeys changed: ', newSelectedRowKeys);
         setSelectedRowKeys(newSelectedRowKeys);
@@ -84,7 +87,7 @@ const SidebarPhanQuyenGroup = React.forwardRef<RefType, any>((props, ref) => {
                 //     </Space>
                 // }
             >
-                <Tabs defaultActiveKey="1" items={items} onChange={onChange} />
+                <Tabs activeKey={type} items={items} onChange={onChange}/>
             </Drawer>
 
         </>
