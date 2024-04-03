@@ -4,6 +4,7 @@ import {useModel} from "@umijs/max";
 import {Button, Drawer, Flex, Form, notification, Row, Table} from "antd";
 import Search from "antd/es/input/Search";
 import {getAllUserRole} from "@/services/apis/userRoleController";
+import {findAllByUsername} from "@/services/apis/aUserRoleController";
 
 export type RefType = {
     create: (pRecord: API.UserRoleDTO, isView: boolean) => void,
@@ -13,14 +14,15 @@ const SidebarPhanQuyenUseData = React.forwardRef<RefType, any>((props, ref) => {
     const [open, setOpen] = useState(false);
     const [form] = Form.useForm();
     const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
-    const [applicationList, setApplicationList] = useState<API.ZtbMapCqtDTO[]>([]);
+    const [applicationList, setApplicationList] = useState<API.AUserPayLoad[]>([]);
     const [record, setRecord] = useState<API.UserRoleDTO>();
     const {listZtpMapCqt, loadData, loadDataBySearch} = useModel('ztp-map-cqt');
+    const {updateTblUsers} = useModel('tbl-user');
     const {updateUserRoles} = useModel('user-role');
     const [api, contextHolder] = notification.useNotification();
     const {paginationQuery, paginationProps, onChangePagination} = usePagination({sort: 'taiKhoan,ASC'});
-    const [listUser, setListUser] = useState<API.UserRoleDTO[]>();
-    const [listUserRole, setUserRole] = useState<API.UserRoleDTO[]>();
+    const [listUser, setListUser] = useState<API.AUserPayLoad[]>();
+    const [listUserRole, setUserRole] = useState<API.AUserPayLoad[]>();
     const [total, setTotal] = useState<any>();
     const [inputSearch, setInputSearch] = useState<string>();
 
@@ -44,32 +46,31 @@ const SidebarPhanQuyenUseData = React.forwardRef<RefType, any>((props, ref) => {
     const onClose = () => {
         setOpen(false);
     };
-    const handleFindAllUser = (body?: any) => {
-        getAllUserRole(paginationQuery, body).then(resp => {
-            setUserRole(resp as API.UserRoleDTO[]);
-            setTotal(resp?.total);
-        })
-    }
-    const handleFindAllUserBygroupId = (body: API.UserRoleDTO) => {
+    // const handleFindAllUser = (body?: any) => {
+    //     getAllUserRole(paginationQuery, body).then(resp => {
+    //         setUserRole(resp as API.UserRoleDTO[]);
+    //         setTotal(resp?.total);
+    //     })
+    // }
+    const handleFindAllUserBygroupId = (body: API.AUserPayLoad) => {
         // lấy ra findbyid của userrole
-        findAllUserRolegroupId(body).then((resp: any) => {
+        findAllByUsername(body).then((resp: any) => {
             setListUser(resp);
         })
     }
 
     useEffect(() => {
         if (open) {
-            handleFindAllUser({});
-            handleFindAllUserBygroupId(record as API.UserRoleDTO);
+            // handleFindAllUser({});
+            handleFindAllUserBygroupId(record as API.AUserPayLoad);
         }
     }, [open, record])
 
     useEffect(() => {
         // set lại nút checkbox theo funcID
         if (listUser) {
-            const keys = listUser.map(item => item?.areaCode);
-            const arrayOfStrings = keys[0]?.split(',');
-            setSelectedRowKeys(arrayOfStrings as React.Key[]);
+            const keys = listUser.map(item => item?.maCqt);
+            setSelectedRowKeys(keys as React.Key[]);
             console.log('ListUser', listUser);
         }
     }, [listUser])
@@ -133,28 +134,16 @@ const SidebarPhanQuyenUseData = React.forwardRef<RefType, any>((props, ref) => {
     function onSave() {
         console.log('listSelected', selectedRowKeys);
         if (selectedRowKeys.length > 0) {
-            // const newdata =[]
-            // selectedRowKeys.forEach(e => {
-            //     const data = {maCqt: e}
-            //     console.log('e', data);
-            //     newdata.push(data)
-            //
-            //     console.log('newdata', newdata);
-            // })
-            let concatenatedString = '';
-            selectedRowKeys.forEach(e => {
-                const data = e;
-                // Nối chuỗi con từ đối tượng data vào chuỗi lớn
-                concatenatedString += JSON.stringify(data) + ',';
-            });
-            const trimmedString = concatenatedString.replace(/"/g, ''); // Loại bỏ tất cả dấu nháy đôi từ chuỗi
-            const body: API.ReqTblUserDTO = {
-                userId: record?.userId,
-                areaCode:  trimmedString
+            const body: API.AUserPayLoad = {
+                usr: record?.username,
+                list: selectedRowKeys,
+                taxo: record?.taxo,
+                domain: record.domain,
+                name: record?.name,
+                descr: record?.descr,
             }
-            updateUserRoles(body, (success: boolean) => {
+            updateTblUsers(body, (success: boolean) => {
                 if (success) {
-                    // props.onReLoadList();
                     api['success']({message: 'Cập nhật  thành công'});
 
                 }
@@ -177,14 +166,6 @@ const SidebarPhanQuyenUseData = React.forwardRef<RefType, any>((props, ref) => {
                         paddingBottom: 80,
                     },
                 }}
-                // extra={
-                //     <Space>
-                //         <Button onClick={onClose}>Làm mới</Button>
-                //         <Button onClick={onFinish} type="primary">
-                //             Lưu
-                //         </Button>
-                //     </Space>
-                // }
             >
 
                 <Form
