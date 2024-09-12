@@ -25,6 +25,9 @@ const HcmaSelect: React.FC<HcmaSelectProps> = (props: HcmaSelectProps) => {
             return props.options;
         }
 
+        const b = props.hcmaOptions?.filter(o => !o['danhDauXoa'] || o[props.hcmaKey!] === props.value)
+            .map(o => ({ value: o[props.hcmaKey!], label: renderName(o), disabled: !!o['danhDauXoa'] }));
+        console.log('bbbbbbbbb', b)
         // nếu truyền vào thẻ hcmaOptions
         return props.hcmaOptions?.filter(o => !o['danhDauXoa'] || o[props.hcmaKey!] === props.value)
             .map(o => ({ value: o[props.hcmaKey!], label: renderName(o), disabled: !!o['danhDauXoa'] }))

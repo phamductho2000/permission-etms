@@ -11,45 +11,46 @@
  * @doc https://umijs.org/docs/guides/routes
  */
 export default [
-    // {
-    //     path: '/authenticate',
-    //     layout: false,
-    //     routes: [
-    //         {
-    //             name: 'login',
-    //             path: '/authenticate/Login',
-    //             component: './auth/login',
-    //         }
-    //     ],
-    // },
+    {
+        path: '/authenticate',
+        layout: false,
+        routes: [
+            {
+                name: 'login',
+                path: '/authenticate/Login',
+                component: './auth/login',
+            }
+        ],
+    },
     {
         path: '/welcome',
         name: 'welcome',
         icon: 'smile',
         component: './Welcome',
+        hideInMenu: true
     },
     {
         path: '/phan-quyen',
         name: 'Phân quyền',
-        icon: 'crown',
+        icon: 'SafetyOutlined',
         // code: 'DANH_MUC',
         // access: 'canAccessMenu',
         routes: [
-            {
-                path: 'chuc-nang',
-                name: 'Quản lí chức năng',
-                component: './permission/function',
-                // code: 'DM__DMDC',
-                // access: 'canAccessMenu',
-                icon: 'crown'
-            },
+            // {
+            //     path: 'chuc-nang',
+            //     name: 'Quản lí chức năng',
+            //     component: './permission/function',
+            //     // code: 'DM__DMDC',
+            //     // access: 'canAccessMenu',
+            //     icon: 'SettingOutlined'
+            // },
             {
                 path: 'nhom',
                 name: 'Quản lý nhóm quyền',
                 component: './permission/group',
                 // code: 'DM__DMDC',
                 // access: 'canAccessMenu',
-                icon: 'crown'
+                icon: 'TeamOutlined'
             },
             {
                 path: 'du-lieu',
@@ -57,16 +58,16 @@ export default [
                 component: './permission/use-data',
                 // code: 'DM__DMDC',
                 // access: 'canAccessMenu',
-                icon: 'crown'
+                icon: 'DatabaseOutlined'
             },
-            {
-                path: 'nguoi-dung',
-                name: 'Quản lý người dùng',
-                component: './permission/user',
-                // code: 'DM__DMDC',
-                // access: 'canAccessMenu',
-                icon: 'crown'
-            },
+            // {
+            //     path: 'nguoi-dung',
+            //     name: 'Quản lý người dùng',
+            //     component: './permission/user',
+            //     // code: 'DM__DMDC',
+            //     // access: 'canAccessMenu',
+            //     icon: 'UserOutlined'
+            // },
         ],
     },
     {

@@ -1,19 +1,18 @@
-import {Footer, Question, SelectLang, AvatarDropdown, AvatarName} from '@/components';
+import {AvatarDropdown, AvatarName, Question, SelectLang} from '@/components';
 import {BookOutlined, LinkOutlined} from '@ant-design/icons';
 import type {Settings as LayoutSettings} from '@ant-design/pro-components';
+import {SettingDrawer} from "@ant-design/pro-components";
 import type {RunTimeLayoutConfig} from '@umijs/max';
 import {Link} from '@umijs/max';
 import defaultSettings from '../config/defaultSettings';
 import {errorConfig} from './requestErrorConfig';
 import React from 'react';
-import {GlobalStateType, getGlobalState} from './core/global.state';
-import {intl, LOGIN_PATH, PUBLIC_PATH, setIntl} from './core/constant';
+import {getGlobalState, GlobalStateType} from './core/global.state';
+import {LOGIN_PATH} from './core/constant';
 import ForbiddenPage from './components/Pages/403';
-import {SettingDrawer} from "@ant-design/pro-components";
-import {stringify} from "querystring";
-import {history, useIntl} from '@@/exports';
 import {getPathname} from "@/utils";
 import Connect from "@/components/Connect";
+import CustomFooter from "@/components/Footer";
 
 const isDev = process.env.NODE_ENV === 'development';
 const Wrapper = ({children, routes}: { children: React.ReactElement, routes: any }) => {
@@ -72,14 +71,13 @@ export const layout: RunTimeLayoutConfig = ({initialState, setInitialState}) => 
                 return <AvatarDropdown menu={true}>{avatarChildren}</AvatarDropdown>;
             },
         },
-        footerRender: () => <Footer/>,
+        footerRender: () => <CustomFooter/>,
         onPageChange: () => {
             const pathname = getPathname();
             const {search} = window.location;
             // if (!pathname.startsWith(PUBLIC_PATH)) {
             //     if (
             //         !initialState?.currentUser // chưa đăng nhập
-            //         || !initialState?.currentUser?.idCoSoDaoTao // đăng nhập nhưng chưa có đơn vị
             //     ) {
             //         history.replace({
             //             pathname: LOGIN_PATH,
@@ -124,6 +122,7 @@ export const layout: RunTimeLayoutConfig = ({initialState, setInitialState}) => 
             : [],
         menuHeaderRender: undefined,
         unAccessible: <ForbiddenPage/>,
+
         childrenRender: (children) => {
             // if (initialState?.loading) return <PageLoading />;
             return (
