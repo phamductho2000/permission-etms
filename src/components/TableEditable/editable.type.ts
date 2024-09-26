@@ -1,5 +1,5 @@
 import {TableProps} from "antd";
-import {ColumnGroupType, ColumnType} from "antd/es/table/interface";
+import {ColumngroupType, ColumnType} from "antd/es/table/interface";
 import {ReactElement} from "react";
 
 
@@ -31,7 +31,7 @@ export type InputRenderType = {
     defaultValue: any,
     variant: any,
 }
-export type EditableColumnsType = (ColumnGroupType<any> | ColumnType<any>) & {
+export type EditableColumnsType = (ColumngroupType<any> | ColumnType<any>) & {
     editable?: boolean;
     record?: any;
     dataType?: DataType,

@@ -1,87 +1,83 @@
-import {Button, Card, Col, Form, Input, Popconfirm, Row, Space, Table, Tooltip} from "antd";
-import access from "@/access";
-import {
-    DeleteOutlined,
-    EditOutlined,
-    EyeOutlined,
-    ReloadOutlined,
-    SearchOutlined,
-    UserAddOutlined
-} from "@ant-design/icons";
+import {Button, Card, Form, Input, Row, Space, Table, Tooltip} from "antd";
+import {SearchOutlined, UserAddOutlined} from "@ant-design/icons";
 import {PageContainer} from "@ant-design/pro-layout";
 import SidebarPhanQuyenUseData, {RefType} from "@/pages/permission/use-data/sidebar-phan-quyen-use-data";
-import {useRef} from "react";
+import {useEffect, useRef, useState} from "react";
+import {useModel} from "@umijs/max";
+import {usePagination} from "ahooks";
 
 export default function ManageUseData() {
     const createSideBarRef = useRef<RefType>();
+    const {listTblUsers, loadData, getAll} = useModel('tbl-user')
+    const [applicationList, setApplicationList] = useState<API.UserRoleDTO[]>([]);
+    const {paginationQuery, paginationProps} = usePagination({sort: 'taiKhoan,ASC'});
 
     const [form] = Form.useForm();
 
-    // column table
-    const dataSource = [
-        {
-            key: '1',
-            id: "23123123",
-            name: '212121',
-            tenTruyCap: "fixdata1",
-            hoVaTen: "testthue1",
-            tenCqt: '10 Downing Street',
-        },
-        {
-            key: '2',
-            id: "id2312313",
-            name: '121212',
-            tenTruyCap: "fixdata2",
-            hoVaTen: "testthue2",
-            tenCqt: '10 Downing Street',
-        },
-    ];
+    useEffect(() => {
+        getAll(applicationList)
+    }, [open]);
 
+    const handleLoadData = (formValue?: API.TblUsersDTO|null) => { //formValue là giá trị bất kì được điền vào các ô tra cứu, được useForm quản lý
+        if (formValue) {
+            loadData(paginationQuery, formValue);
+        } else {
+            form.validateFields().then((formValue: API.TblUsersDTO) => {
+                loadData(paginationQuery, formValue);
+                console.log('formvalue', formValue)
+            })
+        }
+    };
     const columns = [
         {
             title: "STT",
             dataIndex: 'stt',
             key: 'stt',
-            // render: (text: string, row: API.DmPhuongThucDaoTaoDTO, index: number) => index + 1,
+            render: (text: string, row: API.TblUsersDTO, index: number) => index + 1,
         },
         {
-            title: "ID",
-            dataIndex: 'id',
-            key: 'id',
+            title: "Cán bộ thuế",
+            dataIndex: 'descr',
+            key: 'descr',
         },
         {
-            title: "Tên truy cập",
-            dataIndex: 'tenTruyCap',
-            key: 'tenTruyCap',
+            title: "Tài khoản",
+            dataIndex: 'username',
+            key: 'username',
         },
         {
-            title: "Họ Và Tên",
-            dataIndex: 'hoVaTen',
-            key: 'hoVaTen',
+            title: "Tên miền",
+            dataIndex: 'domain',
+            key: 'domain',
         },
         {
-            title: "Tên CQT",
-            dataIndex: 'tenCqt',
-            key: 'tenCqt',
+            title: "Cơ quan thuế",
+            dataIndex: 'taxo',
+            key: 'taxo',
         },
+        // {
+        //     title: "Tên CQT",
+        //     dataIndex: 'areaCode',
+        //     key: 'areaCode',
+        // },
         {
             title: "Thao tác",
             dataIndex: 'id',
             key: 'id',
-            render: (id: string, record: API.DmPhuongThucDaoTaoDTO) =>
+            render: (id: string, record: API.UserRoleDTO) =>
                 <Space>
-                    <Tooltip placement="top" title='Xem'>
-                        <Button onClick={() => createSideBarRef.current?.update(record, true)}
-                                icon={<EyeOutlined/>}>
-                        </Button>
-                    </Tooltip>
+                    {/*<Tooltip placement="top" title='Xem'>*/}
+                    {/*    <Button onClick={() => createSideBarRef.current?.update(record, true)}*/}
+                    {/*            icon={<EyeOutlined/>}>*/}
+                    {/*    </Button>*/}
+                    {/*</Tooltip>*/}
 
-                    <Tooltip placement="top" title='Sửa'>
-                        <Button onClick={() => createSideBarRef.current?.update(record, false)}
-                                icon={<EditOutlined/>}></Button>
-                    </Tooltip>
+                    {/*<Tooltip placement="top" title='Sửa'>*/}
+                    {/*    <Button onClick={() => createSideBarRef.current?.update(record, false)}*/}
+                    {/*            icon={<EditOutlined/>}></Button>*/}
+                    {/*</Tooltip>*/}
                     <Tooltip placement="top" title='Phân quyền'>
-                        <Button onClick={() => createSideBarRef.current?.create()}
+                        <Button onClick={() => createSideBarRef.current?.create(record)}
                                 icon={<UserAddOutlined/>}>
                         </Button>
                     </Tooltip>
@@ -113,10 +109,10 @@ export default function ManageUseData() {
                         wrapperCol={{span: 16}}
                     >
                         <Row>
-                            <Form.Item label={""} style={{width: "350px"}} >
-                                <Input placeholder="ID or Họ và Tên"/>
+                            <Form.Item name={"username"}  style={{width: "350px"}} >
+                                <Input placeholder="Tài khoản"/>
                             </Form.Item>
-                            <Button type="primary" style={{marginLeft: "-80px"}} icon={<SearchOutlined />} >Tìm Kiếm</Button>
+                            <Button type="primary" style={{marginLeft: "-80px"}} icon={<SearchOutlined />} onClick={() => handleLoadData()} >Tìm Kiếm</Button>
                         </Row>
                     </Form>
                 </div>
@@ -127,11 +123,11 @@ export default function ManageUseData() {
                             {/*<Button icon={<ReloadOutlined/>} onClick={handleLoadData}></Button>*/}
                         </Space>
                         <Table
-                            dataSource={dataSource}
+                            dataSource={listTblUsers}
                             columns={columns}
                             style={{marginTop: 14}}
                             // pagination={{...paginationProps, total: total}}
-                            rowKey={"ma"}
+                            rowKey={"id"}
                         />
                     </Card>
                 </div>
